@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sabor Web App - menú, pedidos, reservas y panel administrativo para Restaurante Sabor & Tradición." />
+  <title>Sabor & Tradición | Sabor Web App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#inicio" aria-label="Ir al inicio">
+        <span class="brand-mark">S&T</span>
+        <span><strong>Sabor & Tradición</strong><small>Comida peruana en Piura</small></span>
+      </a>
+      <button id="menuToggle" class="menu-toggle" aria-label="Abrir menú">☰</button>
+      <nav id="mainNav" class="main-nav">
+        <a href="#inicio">Inicio</a>
+        <a href="#menu">Menú</a>
+        <a href="#pedidos">Pedidos</a>
+        <a href="#reservas">Reservas</a>
+        <a href="#admin" class="nav-admin">Administración</a>
+      </nav>
+      <button id="cartButton" class="cart-button" type="button">🛒 <span>Pedido</span><b id="cartCount">0</b></button>
+    </div>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Tradición peruana, ahora también en línea</span>
+          <h1>Tu mesa y tu comida favorita, <em>sin esperar de más.</em></h1>
+          <p>Consulta el menú actualizado, realiza pedidos para llevar y reserva tu mesa desde cualquier navegador.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#menu">Ver menú</a>
+            <a class="btn btn-secondary" href="#reservas">Reservar mesa</a>
+          </div>
+          <div class="hero-info">
+            <div><strong>📍 Piura</strong><span>Av. Grau N.º 456</span></div>
+            <div><strong>⏱ Atención ágil</strong><span>Pedidos y reservas digitales</span></div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="plate-card">
+            <div class="plate-emoji">🍛</div>
+            <span>Especial de la casa</span>
+            <h3>Seco de cabrito</h3>
+            <p>Con frejoles y arroz blanco.</p>
+            <strong>S/ 28.00</strong>
+          </div>
+          <div class="floating-tag tag-1">★ Cocina criolla</div>
+          <div class="floating-tag tag-2">✓ Disponible hoy</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quick-actions section-lite">
+      <div class="container cards-3">
+        <article class="action-card"><span>01</span><h3>Consulta el menú</h3><p>Precios y disponibilidad actualizados.</p><a href="#menu">Explorar →</a></article>
+        <article class="action-card"><span>02</span><h3>Haz tu pedido</h3><p>Selecciona platos y calcula el total automáticamente.</p><a href="#pedidos">Pedir →</a></article>
+        <article class="action-card"><span>03</span><h3>Reserva una mesa</h3><p>Elige fecha, hora y número de comensales.</p><a href="#reservas">Reservar →</a></article>
+      </div>
+    </section>
+
+    <section id="menu" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <div><span class="eyebrow">Menú digital</span><h2>Sabores peruanos para hoy</h2></div>
+          <div id="categoryFilters" class="filters"></div>
+        </div>
+        <div id="menuGrid" class="menu-grid"></div>
+      </div>
+    </section>
+
+    <section id="pedidos" class="section order-section">
+      <div class="container two-col">
+        <div>
+          <span class="eyebrow">Pedidos online</span>
+          <h2>Arma tu pedido para llevar</h2>
+          <p class="muted">Agrega productos desde el menú. El total se calcula automáticamente y puedes confirmar tu pedido aquí mismo.</p>
+          <div class="notice">💡 Demo académica: los datos se guardan en <strong>localStorage</strong> del navegador.</div>
+        </div>
+        <div class="cart-panel">
+          <div class="panel-title"><h3>Tu pedido</h3><span id="cartItemsLabel">0 productos</span></div>
+          <div id="cartItems" class="cart-items"></div>
+          <div class="cart-total"><span>Total</span><strong id="cartTotal">S/ 0.00</strong></div>
+          <form id="orderForm" class="form-grid">
+            <input id="orderName" type="text" placeholder="Nombre del cliente" required />
+            <input id="orderPhone" type="tel" placeholder="Teléfono" required />
+            <select id="orderType" required>
+              <option value="Para llevar">Para llevar</option>
+              <option value="Consumo en local">Consumo en local</option>
+            </select>
+            <textarea id="orderNotes" rows="3" placeholder="Indicaciones adicionales (opcional)"></textarea>
+            <button class="btn btn-primary full" type="submit">Confirmar pedido</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="reservas" class="section reserve-section">
+      <div class="container two-col reserve-grid">
+        <div class="reserve-copy">
+          <span class="eyebrow">Reservas</span>
+          <h2>Tu mesa, lista cuando llegues</h2>
+          <p>Selecciona una fecha, hora y el número de personas. El sistema valida campos básicos y registra la reserva.</p>
+          <ul class="feature-list">
+            <li>✓ Registro inmediato</li>
+            <li>✓ Historial visible en el panel administrativo</li>
+            <li>✓ Evita depender únicamente de llamadas telefónicas</li>
+          </ul>
+        </div>
+        <form id="reservationForm" class="booking-card">
+          <h3>Nueva reserva</h3>
+          <label>Nombre<input id="resName" type="text" required /></label>
+          <label>Teléfono<input id="resPhone" type="tel" required /></label>
+          <div class="form-row">
+            <label>Fecha<input id="resDate" type="date" required /></label>
+            <label>Hora<select id="resTime" required></select></label>
+          </div>
+          <label>Comensales<input id="resGuests" type="number" min="1" max="12" value="2" required /></label>
+          <label>Comentario<textarea id="resNotes" rows="3" placeholder="Opcional"></textarea></label>
+          <button class="btn btn-primary full" type="submit">Registrar reserva</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="admin" class="section admin-section">
+      <div class="container">
+        <div class="section-heading">
+          <div><span class="eyebrow">Panel administrativo</span><h2>Gestión operativa del restaurante</h2></div>
+          <button id="resetDemo" class="btn btn-danger" type="button">Restablecer demo</button>
+        </div>
+
+        <div class="stats-grid">
+          <article><span>Pedidos registrados</span><strong id="statOrders">0</strong></article>
+          <article><span>Reservas registradas</span><strong id="statReservations">0</strong></article>
+          <article><span>Platos disponibles</span><strong id="statAvailable">0</strong></article>
+          <article><span>Ventas registradas</span><strong id="statSales">S/ 0.00</strong></article>
+        </div>
+
+        <div class="admin-tabs" role="tablist">
+          <button class="tab active" data-tab="adminOrders">Pedidos</button>
+          <button class="tab" data-tab="adminReservations">Reservas</button>
+          <button class="tab" data-tab="adminMenu">Menú / disponibilidad</button>
+          <button class="tab" data-tab="adminClients">Clientes</button>
+        </div>
+
+        <div id="adminOrders" class="tab-panel active"></div>
+        <div id="adminReservations" class="tab-panel"></div>
+        <div id="adminMenu" class="tab-panel"></div>
+        <div id="adminClients" class="tab-panel"></div>
+      </div>
+    </section>
+  </main>
+
+  <aside id="toast" class="toast" aria-live="polite"></aside>
+
+  <footer>
+    <div class="container footer-grid">
+      <div><strong>Sabor & Tradición E.I.R.L.</strong><p>Av. Grau N.º 456, Cercado de Piura, Piura.</p></div>
+      <div><strong>Sabor Web App</strong><p>Frontend demostrativo en HTML, CSS y JavaScript.</p></div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

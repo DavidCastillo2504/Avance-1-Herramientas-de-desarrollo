@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import MenuSection from '../components/MenuSection'
 import OrderPanel from '../components/OrderPanel'
+import ReservationPanel from '../components/ReservationPanel'
 import StatusMessage from '../components/StatusMessage'
 import { api } from '../services/api'
 
@@ -61,6 +62,7 @@ export default function HomePage() {
             <div className="hero-actions">
               <a className="btn btn-primary" href="#menu">Ver menú</a>
               <a className="btn btn-secondary" href="#pedidos">Hacer pedido</a>
+              <a className="btn btn-secondary" href="#reservas">Reservar mesa</a>
             </div>
             <div className="hero-info">
               <div><strong>📍 Piura</strong><span>Av. Grau N.º 456</span></div>
@@ -78,10 +80,11 @@ export default function HomePage() {
       <MenuSection menu={menu} loading={loading} error={error} activeCategory={activeCategory}
         onCategory={setActiveCategory} onAdd={addToCart} />
       <OrderPanel cart={cart} onQuantity={changeQuantity} onConfirmed={orderConfirmed} />
+      <ReservationPanel />
       <section className="section next-stage">
         <div className="container next-stage-card">
-          <div><span className="eyebrow">Próxima etapa</span><h2>Reservas y clientes frecuentes</h2></div>
-          <p>Estas funciones estaban en el prototipo y están deliberadamente marcadas como pendientes hasta definir capacidad de mesas, horarios y política de confirmación.</p>
+          <div><span className="eyebrow">Próxima etapa</span><h2>Clientes frecuentes</h2></div>
+          <p>El módulo de reservas ya está activo. La siguiente etapa incorporará perfiles de clientes y beneficios por recurrencia.</p>
         </div>
       </section>
     </main>

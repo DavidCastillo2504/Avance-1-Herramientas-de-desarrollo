@@ -12,7 +12,7 @@ export default function MenuSection({ menu, loading, error, activeCategory, onCa
     <section id="menu" className="section">
       <div className="container">
         <div className="section-heading">
-          <div><span className="eyebrow">Menú digital</span><h2>Sabores peruanos para hoy</h2></div>
+          <div><span className="eyebrow">NUESTRO MENU</span><h2>Sabores peruanos para hoy</h2></div>
           {!loading && !error && (
             <div className="filters" aria-label="Categorías">
               {categories.map((category) => (

@@ -64,6 +64,8 @@ Puede copiarse `.env.example` a `.env` para cambiar la URL de la API.
 
 ## API REST
 
+El módulo de reservas permite registrar solicitudes futuras de 1 a 20 personas entre las 12:00 y 22:00, con un máximo de 40 comensales por franja. Administración puede confirmarlas, cancelarlas o devolverlas a pendiente.
+
 | Método | Ruta | Función |
 |---|---|---|
 | `GET` | `/api/menu-items` | Lista el menú; acepta `?category=Criollos`. |

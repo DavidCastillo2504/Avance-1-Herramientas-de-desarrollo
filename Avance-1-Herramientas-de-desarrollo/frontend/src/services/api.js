@@ -28,4 +28,11 @@ export const api = {
     method: 'PATCH',
     body: JSON.stringify({ status }),
   }),
+  createReservation: (reservation) => request('/reservations', {
+    method: 'POST', body: JSON.stringify(reservation),
+  }),
+  getReservations: () => request('/reservations?page=0&size=50'),
+  updateReservationStatus: (id, status) => request(`/reservations/${id}/status`, {
+    method: 'PATCH', body: JSON.stringify({ status }),
+  }),
 }

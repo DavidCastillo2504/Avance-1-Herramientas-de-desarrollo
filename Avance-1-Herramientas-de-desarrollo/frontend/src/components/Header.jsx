@@ -15,6 +15,7 @@ export default function Header() {
           <Link to="/#inicio" onClick={() => setOpen(false)}>Inicio</Link>
           <Link to="/#menu" onClick={() => setOpen(false)}>Menú</Link>
           <Link to="/#pedidos" onClick={() => setOpen(false)}>Pedidos</Link>
+          <Link to="/#reservas" onClick={() => setOpen(false)}>Reservas</Link>
           <NavLink className="nav-admin" to="/admin" onClick={() => setOpen(false)}>Administración</NavLink>
         </nav>
       </div>

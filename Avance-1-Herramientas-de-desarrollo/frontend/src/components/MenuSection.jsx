@@ -12,7 +12,7 @@ export default function MenuSection({ menu, loading, error, activeCategory, onCa
     <section id="menu" className="section">
       <div className="container">
         <div className="section-heading">
-          <div><span className="eyebrow">Menú digital</span><h2>Sabores peruanos para hoy</h2></div>
+          <div><span className="eyebrow">NUESTRO MENÚ</span><h2>Sabores peruanos para hoy</h2></div>
           {!loading && !error && (
             <div className="filters" aria-label="Categorías">
               {categories.map((category) => (
@@ -24,10 +24,13 @@ export default function MenuSection({ menu, loading, error, activeCategory, onCa
         </div>
         {loading && <div className="loading-card">Cargando el menú…</div>}
         <StatusMessage type="error">{error}</StatusMessage>
+        {!loading && !error && visibleItems.length === 0 && (
+          <div className="loading-card">No hay platos en esta categoría por ahora.</div>
+        )}
         {!loading && !error && (
           <div className="menu-grid">
             {visibleItems.map((dish) => (
-              <article className="dish-card" key={dish.id}>
+              <article className={`dish-card ${dish.available ? '' : 'sold-out'}`} key={dish.id}>
                 <div className="dish-visual">
                   <span>{dish.emoji}</span>
                   <span className={`badge ${dish.available ? '' : 'off'}`}>{dish.available ? 'Disponible' : 'Agotado'}</span>

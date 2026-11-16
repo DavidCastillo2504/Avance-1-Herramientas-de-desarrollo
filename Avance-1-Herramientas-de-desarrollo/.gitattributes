@@ -1,0 +1,4 @@
+# Los scripts se ejecutan en Linux (EC2): deben conservar saltos de línea LF aunque se editen en Windows.
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.yaml text eol=lf

@@ -1,3 +1,5 @@
+# SOLO PARA DESARROLLO LOCAL (credenciales de ejemplo).
+# Para la EC2 usa compose.prod.yaml junto con un archivo .env (ver AWS_DEPLOYMENT_GUIDE.md).
 services:
   db:
     image: postgres:17-alpine
@@ -6,7 +8,8 @@ services:
       POSTGRES_USER: sabor_user
       POSTGRES_PASSWORD: sabor_password
     ports:
-      - "5432:5432"
+      # Solo accesible desde tu propia máquina.
+      - "127.0.0.1:5432:5432"
     volumes:
       - sabor_postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -22,6 +25,11 @@ services:
       DB_USERNAME: sabor_user
       DB_PASSWORD: sabor_password
       CORS_ALLOWED_ORIGINS: http://localhost:5173
+      JWT_SECRET: desarrollo-local-no-usar-en-produccion-123456
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: admin-local-123
+      # Opcional en local: pon un bucket y credenciales AWS si quieres probar la carga a S3.
+      S3_BUCKET: ""
     ports:
       - "8080:8080"
     depends_on:

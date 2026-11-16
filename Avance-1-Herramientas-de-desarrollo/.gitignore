@@ -1,7 +1,12 @@
 frontend/node_modules/
 frontend/dist/
-frontend/.env
 backend/target/
 .idea/
 *.iml
+
+# Archivos con secretos o URLs de cada entorno: nunca se suben.
+# (frontend/.env.development sí se versiona: solo apunta a localhost.)
 .env
+.env.local
+.env.production
+.env.*.local

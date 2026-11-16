@@ -4,6 +4,12 @@ import StatusMessage from './StatusMessage'
 
 const initialForm = { customerName: '', phone: '', reservationDate: '', reservationTime: '', partySize: 2, notes: '' }
 
+// Franjas de 30 minutos entre 12:00 y 22:00 (mismas reglas que valida el backend).
+const TIME_SLOTS = Array.from({ length: 21 }, (_, index) => {
+  const minutes = 12 * 60 + index * 30
+  return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`
+})
+
 function localDate(offsetDays = 0) {
   const date = new Date()
   date.setDate(date.getDate() + offsetDays)
@@ -57,7 +63,10 @@ export default function ReservationPanel() {
             <label>Telefono<input name="phone" type="tel" value={form.phone} onChange={updateForm} pattern="[0-9+() -]{7,20}" maxLength="20" autoComplete="tel" required /></label>
             <div className="form-row">
               <label>Fecha<input name="reservationDate" type="date" value={form.reservationDate} min={minDate} max={maxDate} onChange={updateForm} required /></label>
-              <label>Hora<input name="reservationTime" type="time" value={form.reservationTime} min="12:00" max="22:00" step="1800" onChange={updateForm} required /></label>
+              <label>Hora<select name="reservationTime" value={form.reservationTime} onChange={updateForm} required>
+                <option value="" disabled>Selecciona</option>
+                {TIME_SLOTS.map((slot) => <option key={slot} value={slot}>{slot}</option>)}
+              </select></label>
             </div>
             <label>Numero de personas<input name="partySize" type="number" value={form.partySize} min="1" max="20" onChange={updateForm} required /></label>
             <label>Indicaciones<textarea name="notes" value={form.notes} onChange={updateForm} maxLength="500" rows="3" placeholder="Cumpleanos, silla para bebe u otra solicitud (opcional)" /></label>

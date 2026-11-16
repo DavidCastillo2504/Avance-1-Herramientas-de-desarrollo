@@ -34,7 +34,30 @@ public class MenuItem {
     @Column(nullable = false)
     private boolean available;
 
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
+
     protected MenuItem() {
+    }
+
+    public MenuItem(String name, String category, BigDecimal price, String emoji, String description,
+                    boolean available, String imageUrl) {
+        update(name, category, price, emoji, description, available, imageUrl);
+    }
+
+    public void update(String name, String category, BigDecimal price, String emoji, String description,
+                       boolean available, String imageUrl) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.emoji = emoji;
+        this.description = description;
+        this.available = available;
+        this.imageUrl = imageUrl;
+    }
+
+    public void changeAvailability(boolean available) {
+        this.available = available;
     }
 
     public Long getId() { return id; }
@@ -44,4 +67,5 @@ public class MenuItem {
     public String getEmoji() { return emoji; }
     public String getDescription() { return description; }
     public boolean isAvailable() { return available; }
+    public String getImageUrl() { return imageUrl; }
 }

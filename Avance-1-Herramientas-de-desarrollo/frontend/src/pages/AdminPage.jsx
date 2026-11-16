@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
+import LoginForm from '../components/LoginForm'
+import MenuAdmin from '../components/MenuAdmin'
 import StatusMessage from '../components/StatusMessage'
-import { api } from '../services/api'
+import { api, onUnauthorized, session } from '../services/api'
 
 const money = (value) => `S/ ${Number(value).toFixed(2)}`
 const orderStatusLabel = { PENDING: 'Pendiente', READY: 'Listo' }
@@ -8,8 +10,18 @@ const reservationStatusLabel = { PENDING: 'Pendiente', CONFIRMED: 'Confirmada', 
 const typeLabel = { TAKEAWAY: 'Para llevar', DINE_IN: 'Consumo en local' }
 
 export default function AdminPage() {
+  const [user, setUser] = useState(() => session.get())
+
+  useEffect(() => onUnauthorized(() => setUser(null)), [])
+
+  if (!user) return <LoginForm onLogin={setUser} />
+  return <AdminDashboard user={user} onLogout={() => { session.clear(); setUser(null) }} />
+}
+
+function AdminDashboard({ user, onLogout }) {
   const [orders, setOrders] = useState([])
   const [reservations, setReservations] = useState([])
+  const [showHistory, setShowHistory] = useState(false)
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -20,7 +32,7 @@ export default function AdminPage() {
     setError('')
     try {
       const [orderPage, dashboard, reservationPage] = await Promise.all([
-        api.getOrders(), api.getDashboard(), api.getReservations(),
+        api.getOrders(), api.getDashboard(), api.getReservations(!showHistory),
       ])
       setOrders(orderPage.content)
       setStats(dashboard)
@@ -30,6 +42,10 @@ export default function AdminPage() {
     } finally {
       setLoading(false)
     }
+  }, [showHistory])
+
+  const refreshStats = useCallback(() => {
+    api.getDashboard().then(setStats).catch(() => {})
   }, [])
 
   useEffect(() => { loadData() }, [loadData])
@@ -64,11 +80,14 @@ export default function AdminPage() {
     <main className="section admin-section">
       <div className="container">
         <div className="section-heading">
-          <div><span className="eyebrow">Panel administrativo</span><h1 className="admin-title">Gestion del restaurante</h1></div>
-          <button className="btn btn-secondary" onClick={loadData} disabled={loading}>Actualizar</button>
+          <div><span className="eyebrow">Panel administrativo · {user.username}</span><h1 className="admin-title">Gestión del restaurante</h1></div>
+          <div className="action-group">
+            <button className="btn btn-secondary" onClick={loadData} disabled={loading}>Actualizar</button>
+            <button className="btn btn-secondary" onClick={onLogout}>Cerrar sesión</button>
+          </div>
         </div>
         <StatusMessage type="error">{error}</StatusMessage>
-        {loading && <div className="loading-card">Consultando la operacion...</div>}
+        {loading && <div className="loading-card">Consultando la operación…</div>}
         {!loading && stats && (
           <div className="stats-grid">
             <article><span>Pedidos registrados</span><strong>{stats.orderCount}</strong></article>
@@ -81,7 +100,7 @@ export default function AdminPage() {
           <div className="section-heading"><div><span className="eyebrow">Cocina</span><h2>Pedidos</h2></div></div>
           {orders.length === 0 && <div className="empty">No hay pedidos registrados.</div>}
           {orders.length > 0 && <div className="table-wrap"><table className="data-table">
-            <thead><tr><th>Pedido</th><th>Cliente</th><th>Detalle</th><th>Total</th><th>Estado</th><th>Accion</th></tr></thead>
+            <thead><tr><th>Pedido</th><th>Cliente</th><th>Detalle</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead>
             <tbody>{orders.map((order) => <tr key={order.id}>
               <td><strong>{order.id.slice(0, 8).toUpperCase()}</strong><br /><small>{new Intl.DateTimeFormat('es-PE', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(order.createdAt))}</small></td>
               <td>{order.customerName}<br /><small>{order.phone}</small></td>
@@ -94,8 +113,11 @@ export default function AdminPage() {
         </section>}
 
         {!loading && <section className="admin-block">
-          <div className="section-heading"><div><span className="eyebrow">Atencion al cliente</span><h2>Reservas</h2></div><strong>{reservations.length} registradas</strong></div>
-          {reservations.length === 0 && <div className="empty">No hay reservas registradas.</div>}
+          <div className="section-heading"><div><span className="eyebrow">Atención al cliente</span><h2>Reservas</h2></div>
+            <div className="action-group"><strong>{reservations.length} {showHistory ? 'en el historial' : 'desde hoy'}</strong>
+              <button className="small-btn" onClick={() => setShowHistory((value) => !value)}>
+                {showHistory ? 'Ver próximas' : 'Ver historial completo'}</button></div></div>
+          {reservations.length === 0 && <div className="empty">{showHistory ? 'No hay reservas registradas.' : 'No hay reservas desde hoy.'}</div>}
           {reservations.length > 0 && <div className="table-wrap"><table className="data-table">
             <thead><tr><th>Reserva</th><th>Cliente</th><th>Fecha y hora</th><th>Personas</th><th>Indicaciones</th><th>Estado</th><th>Acciones</th></tr></thead>
             <tbody>{reservations.map((reservation) => <tr key={reservation.id}>
@@ -113,6 +135,8 @@ export default function AdminPage() {
             </tr>)}</tbody>
           </table></div>}
         </section>}
+
+        <MenuAdmin onChange={refreshStats} />
       </div>
     </main>
   )

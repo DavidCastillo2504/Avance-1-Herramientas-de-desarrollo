@@ -1,3 +1,4 @@
+import DishImage from './DishImage'
 import StatusMessage from './StatusMessage'
 
 const money = (value) => `S/ ${Number(value).toFixed(2)}`
@@ -32,7 +33,7 @@ export default function MenuSection({ menu, loading, error, activeCategory, onCa
             {visibleItems.map((dish) => (
               <article className={`dish-card ${dish.available ? '' : 'sold-out'}`} key={dish.id}>
                 <div className="dish-visual">
-                  <span>{dish.emoji}</span>
+                  <DishImage dish={dish} />
                   <span className={`badge ${dish.available ? '' : 'off'}`}>{dish.available ? 'Disponible' : 'Agotado'}</span>
                 </div>
                 <div><h3>{dish.name}</h3><p>{dish.description}</p></div>

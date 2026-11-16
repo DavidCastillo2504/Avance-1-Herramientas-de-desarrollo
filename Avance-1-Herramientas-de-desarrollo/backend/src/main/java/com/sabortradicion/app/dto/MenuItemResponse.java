@@ -11,10 +11,11 @@ public record MenuItemResponse(
         BigDecimal price,
         String emoji,
         String description,
-        boolean available
+        boolean available,
+        String imageUrl
 ) {
     public static MenuItemResponse from(MenuItem item) {
         return new MenuItemResponse(item.getId(), item.getName(), item.getCategory(), item.getPrice(),
-                item.getEmoji(), item.getDescription(), item.isAvailable());
+                item.getEmoji(), item.getDescription(), item.isAvailable(), item.getImageUrl());
     }
 }

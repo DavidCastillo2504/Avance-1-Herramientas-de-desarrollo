@@ -34,8 +34,9 @@ public class ReservationController {
     @GetMapping
     public Page<ReservationResponse> findAll(
             @RequestParam(defaultValue = "0") @Min(0) int page,
-            @RequestParam(defaultValue = "20") @Min(1) @Max(50) int size) {
-        return reservationService.findAll(page, size);
+            @RequestParam(defaultValue = "20") @Min(1) @Max(50) int size,
+            @RequestParam(defaultValue = "true") boolean upcoming) {
+        return reservationService.findAll(page, size, upcoming);
     }
 
     @PatchMapping("/{id}/status")

@@ -6,7 +6,12 @@ COPY src src
 RUN mvn -q package -DskipTests
 
 FROM eclipse-temurin:21-jre
+# El proceso no corre como root dentro del contenedor.
+RUN groupadd --system app && useradd --system --gid app --no-create-home app
 WORKDIR /app
 COPY --from=build /app/target/sabor-api-0.1.0.jar app.jar
+USER app
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# MaxRAMPercentage hace que la JVM respete la memoria disponible de la instancia o del contenedor.
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=75"
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]
